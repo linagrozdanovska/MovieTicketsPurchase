@@ -15,7 +15,6 @@ namespace MovieTicketsPurchase.Web.Data
         {
         }
 
-        public virtual DbSet<Movie> Movies { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<TicketInCart> TicketsInCart { get; set; }
@@ -23,10 +22,6 @@ namespace MovieTicketsPurchase.Web.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<Movie>()
-                .Property(z => z.MovieId)
-                .ValueGeneratedOnAdd();
 
             builder.Entity<Cart>()
                .Property(z => z.CartId)
