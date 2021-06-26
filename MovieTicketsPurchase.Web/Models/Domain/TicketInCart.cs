@@ -11,5 +11,6 @@ namespace MovieTicketsPurchase.Web.Models.Domain
         public Ticket Ticket { get; set; }
         public Guid CartId { get; set; }
         public Cart Cart { get; set; }
+        public int Quantity { get; set; }
     }
 }
