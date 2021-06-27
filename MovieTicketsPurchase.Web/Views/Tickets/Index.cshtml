@@ -5,62 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Movie Tickets</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieGenre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShowTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="@item.MovieImage" alt="Movie Poster" style="width: 100px;"/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieGenre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShowTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
+
+<div class="row">
+@foreach (var item in Model)
+{
+    <div class="col-4">
+        <div class="card" style="width: 240px;">
+            <img class="card-img-top" src="@item.MovieImage" alt="Movie Poster" style="height: 360px;" />
+            <div class="card-body">
+                <h4 class="card-title">@item.MovieName</h4>
+                <h5 class="card-subtitle text-secondary mb-2">@item.ShowTime</h5>
+                <a asp-action="Details" asp-route-id="@item.TicketId">See Details &raquo;</a>
+                <a class="btn btn-success btn-block text-white mt-2 mx-auto" style="width: 12rem;">Buy Ticket</a>
+            </div>
+            <div class="card-footer d-flex justify-content-around">
+                <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a>
                 <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
-            </td>
-        </tr>
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+</div>
