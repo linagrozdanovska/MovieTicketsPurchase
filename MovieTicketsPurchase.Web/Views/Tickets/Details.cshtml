@@ -19,15 +19,15 @@
         <dl class="list-group-horizontal">
             <dt>Showtime</dt>
             <dd>@Model.ShowTime</dd>
-            <dt>Ticket Price</dt>
+            <dt>Ticket Price (MKD)</dt>
             <dd>@Model.Price</dd>
         </dl>
-        <a class="btn btn-success text-white mt-2" style="width: 12rem;">Buy Ticket</a>
+        <a class="btn btn-success text-white mt-2" style="width: 12rem;">Add to Cart</a>
     </div>
 </div>
 <div class="row mt-5">
     <div class="col-12">
         <a asp-action="Index" class="btn btn-secondary d-inline-block mr-2">&laquo; Back to List</a>
-        <a asp-action="Edit"class="btn btn-primary" asp-route-id="@Model.TicketId">Edit</a>
+        <a asp-action="Edit"class="btn btn-info" asp-route-id="@Model.TicketId" style="width: 6rem">Edit</a>
     </div>
 </div>
