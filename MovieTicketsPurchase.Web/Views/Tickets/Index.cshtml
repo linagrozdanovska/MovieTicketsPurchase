@@ -21,7 +21,7 @@
                 <h4 class="card-title">@item.MovieName</h4>
                 <h5 class="card-subtitle text-secondary mb-2">@item.ShowTime</h5>
                 <a asp-action="Details" asp-route-id="@item.TicketId">See Details &raquo;</a>
-                <a class="btn btn-success btn-block text-white mt-2 mx-auto" style="width: 12rem;">Add to Cart</a>
+                <a asp-action="AddToCart" asp-route-id="@item.TicketId" class="btn btn-success btn-block text-white mt-2 mx-auto" style="width: 12rem;">Add to Cart</a>
             </div>
             <div class="card-footer d-flex justify-content-around">
                 <a asp-action="Edit" asp-route-id="@item.TicketId" class="btn btn-outline-info" style="width: 6rem">Edit</a>

@@ -22,7 +22,7 @@
             <dt>Ticket Price (MKD)</dt>
             <dd>@Model.Price</dd>
         </dl>
-        <a class="btn btn-success text-white mt-2" style="width: 12rem;">Add to Cart</a>
+        <a asp-action="AddToCart" asp-route-id="@Model.TicketId" class="btn btn-success text-white mt-2" style="width: 12rem;">Add to Cart</a>
     </div>
 </div>
 <div class="row mt-5">

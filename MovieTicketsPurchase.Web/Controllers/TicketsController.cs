@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MovieTicketsPurchase.Web.Data;
 using MovieTicketsPurchase.Web.Models.Domain;
+using MovieTicketsPurchase.Web.Models.DTO;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
@@ -144,6 +146,45 @@ namespace MovieTicketsPurchase.Web.Controllers
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AddToCart(Guid? id)
+        {
+            var ticket = await _context.Tickets.Where(z => z.TicketId.Equals(id)).FirstOrDefaultAsync();
+            AddToCartDto model = new AddToCartDto
+            {
+                SelectedTicket = ticket,
+                TicketId = ticket.TicketId,
+                Quantity = 1
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToCart([Bind("TicketId", "Quantity")] AddToCartDto item)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userCart = await _context.Carts.Where(z => z.OwnerId.Equals(userId)).FirstOrDefaultAsync();
+            if (item.TicketId != null && userCart != null)
+            {
+                var ticket = await _context.Tickets.Where(z => z.TicketId.Equals(item.TicketId)).FirstOrDefaultAsync();
+                if (ticket != null)
+                {
+                    TicketInCart itemToAdd = new TicketInCart
+                    {
+                        Ticket = ticket,
+                        TicketId = ticket.TicketId,
+                        Cart = userCart,
+                        CartId = userCart.CartId,
+                        Quantity = item.Quantity
+                    };
+                    _context.Add(itemToAdd);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Tickets");
+            }
+            return View(item);
         }
 
         private bool TicketExists(Guid id)
