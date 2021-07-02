@@ -27,5 +27,6 @@ namespace MovieTicketsPurchase.Web.Models.Domain
         [Display(Name = "Ticket Price (MKD)")]
         public int Price { get; set; }
         public virtual ICollection<TicketInCart> TicketsInCart { get; set; }
+        public virtual ICollection<TicketInOrder> TicketsInOrder { get; set; }
     }
 }

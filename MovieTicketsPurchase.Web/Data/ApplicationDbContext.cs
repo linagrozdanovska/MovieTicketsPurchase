@@ -48,6 +48,19 @@ namespace MovieTicketsPurchase.Web.Data
                 .HasOne<AppUser>(z => z.Owner)
                 .WithOne(z => z.UserCart)
                 .HasForeignKey<Cart>(z => z.OwnerId);
+
+            builder.Entity<TicketInOrder>()
+                .HasKey(z => new { z.TicketId, z.OrderId });
+
+            builder.Entity<TicketInOrder>()
+                .HasOne(z => z.SelectedTicket)
+                .WithMany(z => z.TicketsInOrder)
+                .HasForeignKey(z => z.TicketId);
+
+            builder.Entity<TicketInOrder>()
+                .HasOne(z => z.UserOrder)
+                .WithMany(z => z.TicketsInOrder)
+                .HasForeignKey(z => z.OrderId);
         }
     }
 }

@@ -19,8 +19,8 @@
         <dl class="list-group-horizontal">
             <dt>Showtime</dt>
             <dd>@Model.ShowTime</dd>
-            <dt>Ticket Price (MKD)</dt>
-            <dd>@Model.Price</dd>
+            <dt>Ticket Price</dt>
+            <dd>@Model.Price MKD</dd>
         </dl>
         <a asp-action="AddToCart" asp-route-id="@Model.TicketId" class="btn btn-success text-white mt-2" style="width: 12rem;">Add to Cart</a>
     </div>

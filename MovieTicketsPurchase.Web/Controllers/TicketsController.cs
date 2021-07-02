@@ -182,9 +182,8 @@ namespace MovieTicketsPurchase.Web.Controllers
                     _context.Add(itemToAdd);
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction("Index", "Tickets");
             }
-            return View(item);
+            return RedirectToAction("Index", "Tickets");
         }
 
         private bool TicketExists(Guid id)

@@ -1,0 +1,41 @@
+﻿@model MovieTicketsPurchase.Web.Models.DTO.CartDto
+
+<h1>Cart</h1>
+<div class="row mb-3">
+    <div class="col-12">
+        <a  asp-action="OrderNow"class="btn btn-success">Order Now</a>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Movie</th>
+            <th scope="col" class="text-right">Ticket Price</th>
+            <th scope="col" class="text-right">Quantity</th>
+            <th scope="col" class="text-right">Sum</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.TicketsInCart.Count; i++)
+        {
+            var item = Model.TicketsInCart[i];
+        <tr>
+            <th scope="row">@(i + 1)</th>
+            <td>@item.Ticket.MovieName</td>
+            <td class="text-right">@item.Ticket.Price MKD</td>
+            <td class="text-right">@item.Quantity</td>
+            <td class="text-right">@(item.Ticket.Price * item.Quantity) MKD</td>
+            <td class="text-center"><a asp-route-id="@item.TicketId" asp-action="DeleteTicketFromCart" class="btn btn-danger">Delete</a></td>
+        </tr>
+        }
+    </tbody>
+    <tfoot class="border-bottom">
+        <tr>
+            <td colspan="4"><strong>Total Price</strong></td>
+            <td class="text-right"><strong>@Model.TotalPrice MKD</strong></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
