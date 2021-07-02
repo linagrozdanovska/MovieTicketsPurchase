@@ -1,9 +1,8 @@
-﻿
-using MovieTicketsPurchase.Web.Models.Domain;
-using MovieTicketsPurchase.Web.Models.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MovieTicketsPurchase.Domain.DomainModels;
+using MovieTicketsPurchase.Domain.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MovieTicketsPurchase.Web.Data;
-using MovieTicketsPurchase.Web.Models.Domain;
-using MovieTicketsPurchase.Web.Models.DTO;
-using MovieTicketsPurchase.Web.Models.Identity;
+using MovieTicketsPurchase.Domain.DomainModels;
+using MovieTicketsPurchase.Domain.DTO;
+using MovieTicketsPurchase.Domain.Identity;
+using MovieTicketsPurchase.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace MovieTicketsPurchase.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
-        
+
         public CartController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
@@ -63,7 +63,7 @@ namespace MovieTicketsPurchase.Web.Controllers
                 .FirstOrDefaultAsync();
             var userCart = loggedInUser.UserCart;
             var productToDelete = userCart.TicketsInCart
-                .Where(z => z.TicketId == id)
+                .Where(z => z.Id == id)
                 .FirstOrDefault();
             userCart.TicketsInCart.Remove(productToDelete);
             _context.Update(userCart);
@@ -93,7 +93,7 @@ namespace MovieTicketsPurchase.Web.Controllers
                 .Select(z => new TicketInOrder
                 {
                     OrderId = orderItem.Id,
-                    TicketId = z.Ticket.TicketId,
+                    Id = z.Ticket.Id,
                     SelectedTicket = z.Ticket,
                     UserOrder = orderItem
                 }).ToList();

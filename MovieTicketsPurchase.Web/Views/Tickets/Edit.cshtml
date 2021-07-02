@@ -1,4 +1,4 @@
-﻿@model MovieTicketsPurchase.Web.Models.Domain.Ticket
+﻿@model MovieTicketsPurchase.Domain.DomainModels.Ticket
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TicketId" />
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="MovieImage" class="control-label"></label>
                 <input asp-for="MovieImage" class="form-control" />

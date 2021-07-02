@@ -7,8 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MovieTicketsPurchase.Web.Data;
-using MovieTicketsPurchase.Web.Models.Identity;
+using MovieTicketsPurchase.Domain.Identity;
+using MovieTicketsPurchase.Repository;
+using MovieTicketsPurchase.Repository.Implementation;
+using MovieTicketsPurchase.Repository.Interface;
+using MovieTicketsPurchase.Services.Implementation;
+using MovieTicketsPurchase.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +37,9 @@ namespace MovieTicketsPurchase.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            services.AddTransient<ITicketService, TicketService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

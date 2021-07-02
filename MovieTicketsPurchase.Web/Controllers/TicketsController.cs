@@ -6,37 +6,37 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MovieTicketsPurchase.Web.Data;
-using MovieTicketsPurchase.Web.Models.Domain;
-using MovieTicketsPurchase.Web.Models.DTO;
+using MovieTicketsPurchase.Domain.DomainModels;
+using MovieTicketsPurchase.Domain.DTO;
+using MovieTicketsPurchase.Services.Interface;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
     public class TicketsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITicketService _ticketService;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(ITicketService ticketService)
         {
-            _context = context;
+            _ticketService = ticketService;
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Tickets.ToListAsync());
+            var allTickets = this._ticketService.GetAllTickets();
+            return View(allTickets);
         }
 
         // GET: Tickets/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.TicketId == id);
+            var ticket = this._ticketService.GetDetailsForTicket(id);
             if (ticket == null)
             {
                 return NotFound();
@@ -56,27 +56,25 @@ namespace MovieTicketsPurchase.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketId,MovieImage,MovieName,MovieDescription,MovieGenre,ShowTime,Price")] Ticket ticket)
+        public IActionResult Create([Bind("Id,MovieImage,MovieName,MovieDescription,MovieGenre,ShowTime,Price")] Ticket ticket)
         {
             if (ModelState.IsValid)
-            {
-                ticket.TicketId = Guid.NewGuid();
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
+            { 
+                this._ticketService.CreateNewTicket(ticket);
                 return RedirectToAction(nameof(Index));
             }
             return View(ticket);
         }
 
         // GET: Tickets/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = this._ticketService.GetDetailsForTicket(id);
             if (ticket == null)
             {
                 return NotFound();
@@ -89,9 +87,9 @@ namespace MovieTicketsPurchase.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("TicketId,MovieImage,MovieName,MovieDescription,MovieGenre,ShowTime,Price")] Ticket ticket)
+        public IActionResult Edit(Guid id, [Bind("Id,MovieImage,MovieName,MovieDescription,MovieGenre,ShowTime,Price")] Ticket ticket)
         {
-            if (id != ticket.TicketId)
+            if (id != ticket.Id)
             {
                 return NotFound();
             }
@@ -100,12 +98,11 @@ namespace MovieTicketsPurchase.Web.Controllers
             {
                 try
                 {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
+                    this._ticketService.UpdeteExistingTicket(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.TicketId))
+                    if (!TicketExists(ticket.Id))
                     {
                         return NotFound();
                     }
@@ -120,15 +117,14 @@ namespace MovieTicketsPurchase.Web.Controllers
         }
 
         // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.TicketId == id);
+            var ticket = this._ticketService.GetDetailsForTicket(id);
             if (ticket == null)
             {
                 return NotFound();
@@ -140,55 +136,34 @@ namespace MovieTicketsPurchase.Web.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            this._ticketService.DeleteTicket(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> AddToCart(Guid? id)
+        public IActionResult AddToCart(Guid? id)
         {
-            var ticket = await _context.Tickets.Where(z => z.TicketId.Equals(id)).FirstOrDefaultAsync();
-            AddToCartDto model = new AddToCartDto
-            {
-                SelectedTicket = ticket,
-                TicketId = ticket.TicketId,
-                Quantity = 1
-            };
+            var model = this._ticketService.GetCartInfo(id);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToCart([Bind("TicketId", "Quantity")] AddToCartDto item)
+        public IActionResult AddToCart([Bind("Id", "Quantity")] AddToCartDto item)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userCart = await _context.Carts.Where(z => z.OwnerId.Equals(userId)).FirstOrDefaultAsync();
-            if (item.TicketId != null && userCart != null)
+            var result = this._ticketService.AddToCart(item, userId);
+            if (result)
             {
-                var ticket = await _context.Tickets.Where(z => z.TicketId.Equals(item.TicketId)).FirstOrDefaultAsync();
-                if (ticket != null)
-                {
-                    TicketInCart itemToAdd = new TicketInCart
-                    {
-                        Ticket = ticket,
-                        TicketId = ticket.TicketId,
-                        Cart = userCart,
-                        CartId = userCart.CartId,
-                        Quantity = item.Quantity
-                    };
-                    _context.Add(itemToAdd);
-                    await _context.SaveChangesAsync();
-                }
+                return RedirectToAction("Index", "Tickets");
             }
-            return RedirectToAction("Index", "Tickets");
+            return View(item);
         }
 
         private bool TicketExists(Guid id)
         {
-            return _context.Tickets.Any(e => e.TicketId == id);
+            return this._ticketService.GetDetailsForTicket(id) != null;
         }
     }
 }

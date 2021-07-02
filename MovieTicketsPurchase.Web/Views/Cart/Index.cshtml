@@ -1,4 +1,4 @@
-﻿@model MovieTicketsPurchase.Web.Models.DTO.CartDto
+﻿@model MovieTicketsPurchase.Domain.DTO.CartDto
 
 <h1>Cart</h1>
 <div class="row mb-3">
@@ -27,7 +27,7 @@
             <td class="text-right">@item.Ticket.Price MKD</td>
             <td class="text-right">@item.Quantity</td>
             <td class="text-right">@(item.Ticket.Price * item.Quantity) MKD</td>
-            <td class="text-center"><a asp-route-id="@item.TicketId" asp-action="DeleteTicketFromCart" class="btn btn-danger">Delete</a></td>
+            <td class="text-center"><a asp-route-id="@item.Id" asp-action="DeleteTicketFromCart" class="btn btn-danger">Delete</a></td>
         </tr>
         }
     </tbody>

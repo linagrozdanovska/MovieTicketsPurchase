@@ -1,4 +1,4 @@
-﻿@model MovieTicketsPurchase.Web.Models.Domain.Ticket
+﻿@model MovieTicketsPurchase.Domain.DomainModels.Ticket
 
 @{
     ViewData["Title"] = "Details";
@@ -22,12 +22,12 @@
             <dt>Ticket Price</dt>
             <dd>@Model.Price MKD</dd>
         </dl>
-        <a asp-action="AddToCart" asp-route-id="@Model.TicketId" class="btn btn-success text-white mt-2" style="width: 12rem;">Add to Cart</a>
+        <a asp-action="AddToCart" asp-route-id="@Model.Id" class="btn btn-success text-white mt-2" style="width: 12rem;">Add to Cart</a>
     </div>
 </div>
 <div class="row mt-5">
     <div class="col-12">
         <a asp-action="Index" class="btn btn-secondary d-inline-block mr-2">&laquo; Back to List</a>
-        <a asp-action="Edit"class="btn btn-info" asp-route-id="@Model.TicketId" style="width: 6rem">Edit</a>
+        <a asp-action="Edit"class="btn btn-info" asp-route-id="@Model.Id" style="width: 6rem">Edit</a>
     </div>
 </div>

@@ -14,4 +14,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MovieTicketsPurchase.Domain\MovieTicketsPurchase.Domain.csproj" />
+    <ProjectReference Include="..\MovieTicketsPurchase.Repository\MovieTicketsPurchase.Repository.csproj" />
+    <ProjectReference Include="..\MovieTicketsPurchase.Services\MovieTicketsPurchase.Services.csproj" />
+  </ItemGroup>
+
 </Project>

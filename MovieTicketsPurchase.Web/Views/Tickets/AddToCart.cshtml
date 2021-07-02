@@ -1,4 +1,4 @@
-﻿@model MovieTicketsPurchase.Web.Models.DTO.AddToCartDto
+﻿@model MovieTicketsPurchase.Domain.DTO.AddToCartDto
 
 @{
     ViewBag.Title = "Add Ticket to Shopping Cart";
@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-4">
         <form asp-action="AddToCart" method="post">
-            <input type="hidden" asp-for="TicketId" />
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="SelectedTicket.MovieName" class="control-label"></label>
                 <input disabled asp-for="SelectedTicket.MovieName" class="form-control" />
