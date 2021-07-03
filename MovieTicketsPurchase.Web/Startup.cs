@@ -40,6 +40,7 @@ namespace MovieTicketsPurchase.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<ICartService, CartService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
