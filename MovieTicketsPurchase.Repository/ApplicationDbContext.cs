@@ -42,7 +42,7 @@ namespace MovieTicketsPurchase.Repository
             builder.Entity<TicketInCart>()
                 .HasOne(z => z.Cart)
                 .WithMany(z => z.TicketsInCart)
-                .HasForeignKey(z => z.Id);
+                .HasForeignKey(z => z.TicketId);
 
             builder.Entity<Cart>()
                 .HasOne<AppUser>(z => z.Owner)
@@ -50,17 +50,17 @@ namespace MovieTicketsPurchase.Repository
                 .HasForeignKey<Cart>(z => z.OwnerId);
 
             builder.Entity<TicketInOrder>()
-                .HasKey(z => new { z.Id, z.OrderId });
+                .HasKey(z => new { z.TicketId, z.OrderId });
 
             builder.Entity<TicketInOrder>()
                 .HasOne(z => z.SelectedTicket)
                 .WithMany(z => z.TicketsInOrder)
-                .HasForeignKey(z => z.Id);
+                .HasForeignKey(z => z.OrderId);
 
             builder.Entity<TicketInOrder>()
                 .HasOne(z => z.UserOrder)
                 .WithMany(z => z.TicketsInOrder)
-                .HasForeignKey(z => z.OrderId);
+                .HasForeignKey(z => z.TicketId);
         }
     }
 }

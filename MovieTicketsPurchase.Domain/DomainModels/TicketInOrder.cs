@@ -7,7 +7,7 @@ namespace MovieTicketsPurchase.Domain.DomainModels
 {
     public class TicketInOrder : BaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid TicketId { get; set; }
         public Ticket SelectedTicket { get; set; }
         public Guid OrderId { get; set; }
         public Order UserOrder { get; set; }
