@@ -22,9 +22,15 @@ namespace MovieTicketsPurchase.Web.Controllers
         }
 
         // GET: Tickets
-        public IActionResult Index()
+        public IActionResult Index(string searchDate)
         {
+            ViewData["CurrentFilter"] = searchDate;
             var allTickets = this._ticketService.GetAllTickets();
+            if (!String.IsNullOrEmpty(searchDate))
+            {
+                DateTime date = DateTime.Parse(searchDate);
+                allTickets = allTickets.Where(z => z.ShowTime.Date == date.Date).ToList();
+            }
             return View(allTickets);
         }
 
