@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MovieTicketsPurchase.Repository.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -213,6 +213,7 @@ namespace MovieTicketsPurchase.Repository.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CartId = table.Column<Guid>(nullable: false),
+                    TicketId = table.Column<Guid>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -225,8 +226,8 @@ namespace MovieTicketsPurchase.Repository.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TicketsInCart_Carts_Id",
-                        column: x => x.Id,
+                        name: "FK_TicketsInCart_Carts_TicketId",
+                        column: x => x.TicketId,
                         principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -236,21 +237,22 @@ namespace MovieTicketsPurchase.Repository.Migrations
                 name: "TicketInOrder",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    OrderId = table.Column<Guid>(nullable: false)
+                    TicketId = table.Column<Guid>(nullable: false),
+                    OrderId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketInOrder", x => new { x.Id, x.OrderId });
+                    table.PrimaryKey("PK_TicketInOrder", x => new { x.TicketId, x.OrderId });
                     table.ForeignKey(
-                        name: "FK_TicketInOrder_Tickets_Id",
-                        column: x => x.Id,
+                        name: "FK_TicketInOrder_Tickets_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TicketInOrder_Order_OrderId",
-                        column: x => x.OrderId,
+                        name: "FK_TicketInOrder_Order_TicketId",
+                        column: x => x.TicketId,
                         principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -316,6 +318,11 @@ namespace MovieTicketsPurchase.Repository.Migrations
                 name: "IX_TicketsInCart_CartId",
                 table: "TicketsInCart",
                 column: "CartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketsInCart_TicketId",
+                table: "TicketsInCart",
+                column: "TicketId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

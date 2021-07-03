@@ -10,8 +10,8 @@ using MovieTicketsPurchase.Repository;
 namespace MovieTicketsPurchase.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210702183934_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210703024301_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,22 +233,30 @@ namespace MovieTicketsPurchase.Repository.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id", "CartId");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("TicketId");
 
                     b.ToTable("TicketsInCart");
                 });
 
             modelBuilder.Entity("MovieTicketsPurchase.Domain.DomainModels.TicketInOrder", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("TicketId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id", "OrderId");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TicketId", "OrderId");
 
                     b.HasIndex("OrderId");
 
@@ -401,7 +409,7 @@ namespace MovieTicketsPurchase.Repository.Migrations
 
                     b.HasOne("MovieTicketsPurchase.Domain.DomainModels.Cart", "Cart")
                         .WithMany("TicketsInCart")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -410,13 +418,13 @@ namespace MovieTicketsPurchase.Repository.Migrations
                 {
                     b.HasOne("MovieTicketsPurchase.Domain.DomainModels.Ticket", "SelectedTicket")
                         .WithMany("TicketsInOrder")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MovieTicketsPurchase.Domain.DomainModels.Order", "UserOrder")
                         .WithMany("TicketsInOrder")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
