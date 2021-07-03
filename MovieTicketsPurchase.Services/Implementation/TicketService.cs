@@ -71,8 +71,9 @@ namespace MovieTicketsPurchase.Services.Implementation
                 {
                     TicketInCart itemToAdd = new TicketInCart
                     {
+                        Id = Guid.NewGuid(),
                         Ticket = ticket,
-                        Id = ticket.Id,
+                        TicketId = ticket.Id,
                         Cart = userCart,
                         CartId = userCart.Id,
                         Quantity = item.Quantity

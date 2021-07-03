@@ -73,7 +73,6 @@ namespace MovieTicketsPurchase.Services.Implementation
                     UserId = userId,
                     User = loggedInUser
                 };
-
                 this._orderRepository.Insert(order);
                 List<TicketInOrder> ticketsInOrder = new List<TicketInOrder>();
                 var result = userCart.TicketsInCart.Select(z => new TicketInOrder

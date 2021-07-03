@@ -31,8 +31,8 @@ namespace MovieTicketsPurchase.Repository
                .Property(z => z.Id)
                .ValueGeneratedOnAdd();
 
-            builder.Entity<TicketInCart>()
-                .HasKey(z => new { z.Id, z.CartId });
+            //builder.Entity<TicketInCart>()
+            //    .HasKey(z => new { z.Id, z.CartId });
 
             builder.Entity<TicketInCart>()
                 .HasOne(z => z.Ticket)
@@ -49,8 +49,8 @@ namespace MovieTicketsPurchase.Repository
                 .WithOne(z => z.UserCart)
                 .HasForeignKey<Cart>(z => z.OwnerId);
 
-            builder.Entity<TicketInOrder>()
-                .HasKey(z => new { z.TicketId, z.OrderId });
+            //builder.Entity<TicketInOrder>()
+            //    .HasKey(z => new { z.TicketId, z.OrderId });
 
             builder.Entity<TicketInOrder>()
                 .HasOne(z => z.SelectedTicket)
