@@ -39,8 +39,10 @@ namespace MovieTicketsPurchase.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ICartService, CartService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
