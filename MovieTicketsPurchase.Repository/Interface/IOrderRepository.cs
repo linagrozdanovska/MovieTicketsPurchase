@@ -8,5 +8,6 @@ namespace MovieTicketsPurchase.Repository.Interface
     public interface IOrderRepository
     {
         List<Order> GetAllOrders(string UserId);
+        Order GetOrderDetails(string userId, Guid id);
     }
 }

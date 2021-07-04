@@ -22,5 +22,10 @@ namespace MovieTicketsPurchase.Services.Implementation
         {
             return this._orderRepository.GetAllOrders(userId);
         }
+
+        public Order GetOrderDetails(string userId, Guid id)
+        {
+            return this._orderRepository.GetOrderDetails(userId, id);
+        }
     }
 }

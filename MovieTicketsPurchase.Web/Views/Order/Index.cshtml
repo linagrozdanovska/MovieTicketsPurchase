@@ -10,10 +10,10 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col" class="text-right" style="width: 3rem;">#</th>
-            <th scope="col" class="text-right" style="width: 15rem;">Number of Tickets</th>
-            <th scope="col" class="text-right" style="width: 30rem;">Ordered Tickets</th>
-            <th scope="col" class="text-right" style="width: 10rem;">Total Price</th>
+            <th scope="col" class="text-right col-1">#</th>
+            <th scope="col" class="text-right col-2">Number of Tickets</th>
+            <th scope="col" class="pl-5">Ordered Tickets</th>
+            <th scope="col" class="text-right col-2">Total Price</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -32,11 +32,11 @@
                 }
                 @totalTickets
             </td>
-            <td class="text-right">
+            <td class="pl-5">
                 @foreach (var ticket in item.TicketsInOrder)
                 {
                 <p>
-                    @ticket.SelectedTicket.MovieName (@ticket.Quantity) <br />
+                    @ticket.SelectedTicket.MovieName<br />
                 </p>
                 }
             </td>
@@ -48,7 +48,7 @@
                 }
                 @totalPrice MKD
             </td>
-            <td></td>
+            <td class="text-center"><a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
             <td></td>
         </tr>
         }

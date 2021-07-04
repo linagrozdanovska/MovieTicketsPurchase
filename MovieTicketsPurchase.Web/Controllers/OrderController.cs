@@ -21,5 +21,11 @@ namespace MovieTicketsPurchase.Web.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(this._orderService.GetAllOrders(userId));
         }
+
+        public IActionResult Details(Guid id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(this._orderService.GetOrderDetails(userId, id));
+        }
     }
 }

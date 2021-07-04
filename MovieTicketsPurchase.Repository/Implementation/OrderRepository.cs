@@ -29,5 +29,15 @@ namespace MovieTicketsPurchase.Repository.Implementation
                 .Include(z => z.User)
                 .ToListAsync().Result;
         }
+
+        public Order GetOrderDetails(string userId, Guid id)
+        {
+            return entities
+                .Where(z => z.UserId.Equals(userId))
+                .Include(z => z.TicketsInOrder)
+                .Include("TicketsInOrder.SelectedTicket")
+                .Include(z => z.User)
+                .SingleOrDefaultAsync(z => z.Id == id).Result;
+        }
     }
 }
