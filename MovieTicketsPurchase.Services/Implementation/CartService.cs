@@ -81,7 +81,8 @@ namespace MovieTicketsPurchase.Services.Implementation
                     TicketId = z.Ticket.Id,
                     SelectedTicket = z.Ticket,
                     OrderId = order.Id,
-                    UserOrder = order
+                    UserOrder = order,
+                    Quantity = z.Quantity
                 }).ToList();
                 ticketsInOrder.AddRange(result);
                 foreach (var item in ticketsInOrder)

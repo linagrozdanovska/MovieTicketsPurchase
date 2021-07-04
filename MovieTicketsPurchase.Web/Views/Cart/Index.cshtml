@@ -9,7 +9,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col" class="text-right">#</th>
             <th scope="col">Movie</th>
             <th scope="col" class="text-right">Ticket Price</th>
             <th scope="col" class="text-right">Quantity</th>
@@ -22,7 +22,7 @@
         {
             var item = Model.TicketsInCart[i];
         <tr>
-            <th scope="row">@(i + 1)</th>
+            <th scope="row" class="text-right">@(i + 1)</th>
             <td>@item.Ticket.MovieName</td>
             <td class="text-right">@item.Ticket.Price MKD</td>
             <td class="text-right">@item.Quantity</td>
