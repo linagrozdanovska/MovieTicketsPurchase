@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GemBox.Document" Version="33.0.1249" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MovieTicketsPurchase.Domain\MovieTicketsPurchase.Domain.csproj" />
     <ProjectReference Include="..\MovieTicketsPurchase.Repository\MovieTicketsPurchase.Repository.csproj" />
   </ItemGroup>

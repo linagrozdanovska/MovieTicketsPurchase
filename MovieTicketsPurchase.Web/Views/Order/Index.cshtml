@@ -12,8 +12,8 @@
         <tr>
             <th scope="col" class="text-right col-1">#</th>
             <th scope="col" class="text-right col-2">Number of Tickets</th>
-            <th scope="col" class="pl-5">Ordered Tickets</th>
-            <th scope="col" class="text-right col-2">Total Price</th>
+            <th scope="col" class="col-4 pl-5">Ordered Tickets</th>
+            <th scope="col" class="text-right col-2 pr-5">Total Price</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -40,7 +40,7 @@
                 </p>
                 }
             </td>
-            <td class="text-right">
+            <td class="text-right pr-5">
                 @{int totalPrice = 0;}
                 @foreach (var ticket in item.TicketsInOrder)
                 {
@@ -49,9 +49,8 @@
                 @totalPrice MKD
             </td>
             <td class="text-center"><a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
-            <td></td>
+            <td class="text-center"><a class="btn btn-outline-primary" asp-action="GenerateInvoice" asp-route-id="@item.Id">Generate Invoice</a></td>
         </tr>
         }
     </tbody>
-    
 </table>

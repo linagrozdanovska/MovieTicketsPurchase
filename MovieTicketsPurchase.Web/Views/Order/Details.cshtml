@@ -1,6 +1,15 @@
 ﻿@model MovieTicketsPurchase.Domain.DomainModels.Order
 
 <h1>Order Details</h1>
+<div class="row mb-2">
+    <label class="col-2"><strong>User </strong></label>
+    <span>@Model.User</span>
+</div>
+<div class="row mb-2">
+    <label class="col-2"><strong>Order ID </strong></label>
+    <span>@Model.Id</span>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
