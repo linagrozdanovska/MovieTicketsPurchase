@@ -31,7 +31,7 @@
             <td>@item.SelectedTicket.MovieDescription</td>
             <td>@item.SelectedTicket.ShowTime</td>
             <td class="text-right">@item.Quantity</td>
-            <td class="text-right">@item.SelectedTicket.Price MKD</td>
+            <td class="text-right">$@item.SelectedTicket.Price</td>
         </tr>
         }
 </tbody>
@@ -52,7 +52,7 @@
                 {
                     totalPrice += ticket.Quantity * ticket.SelectedTicket.Price;
                 }
-                <strong>@totalPrice MKD</strong>
+                <strong>$@totalPrice</strong>
             </td>
         </tr>
     </tfoot>

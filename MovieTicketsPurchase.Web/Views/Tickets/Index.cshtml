@@ -41,7 +41,7 @@
                 <div class="card-body py-2">
                     <h4 class="card-title">@item.MovieName</h4>
                     <h5 class="card-subtitle text-secondary mb-2">@item.ShowTime</h5>
-                    <p class="mb-1">@item.Price MKD</p>
+                    <p class="mb-1">$@item.Price</p>
                     <a asp-action="Details" asp-route-id="@item.Id">See Details &raquo;</a>
                     <a asp-action="AddToCart" asp-route-id="@item.Id" class="btn btn-success btn-block text-white my-3 mx-auto" style="width: 12rem;">Add to Cart</a>
                 </div>

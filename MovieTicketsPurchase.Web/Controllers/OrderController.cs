@@ -48,7 +48,7 @@ namespace MovieTicketsPurchase.Web.Controllers
             {
                 totalQuantity += item.Quantity;
                 totalPrice += item.Quantity * item.SelectedTicket.Price;
-                sb.AppendLine("Movie: " + item.SelectedTicket.MovieName + ", Quantity: " + item.Quantity + ", Price: " + item.SelectedTicket.Price + " MKD");
+                sb.AppendLine("Movie: " + item.SelectedTicket.MovieName + ", Quantity: " + item.Quantity + ", Price: $" + item.SelectedTicket.Price);
             }
             template.Content.Replace("[[TicketList]]", sb.ToString().Trim());
             template.Content.Replace("[[Quantity]]", totalQuantity.ToString());

@@ -23,7 +23,7 @@ namespace MovieTicketsPurchase.Domain.DomainModels
         [Display(Name = "Showtime")]
         public DateTime ShowTime { get; set; }
         [Required]
-        [Display(Name = "Ticket Price (MKD)")]
+        [Display(Name = "Ticket Price")]
         public int Price { get; set; }
         public virtual ICollection<TicketInCart> TicketsInCart { get; set; }
         public virtual ICollection<TicketInOrder> TicketsInOrder { get; set; }

@@ -60,7 +60,7 @@ namespace MovieTicketsPurchase.Web.Controllers
                 worksheet.Cell(3, 2).Value = "Description";
                 worksheet.Cell(3, 3).Value = "Genre";
                 worksheet.Cell(3, 4).Value = "Showtime";
-                worksheet.Cell(3, 5).Value = "Ticket Price (MKD)";
+                worksheet.Cell(3, 5).Value = "Ticket Price (USD)";
                 for (int i = 0; i < allTickets.Count; i++)
                 {
                     var item = allTickets[i];

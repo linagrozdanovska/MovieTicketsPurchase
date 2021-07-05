@@ -46,7 +46,7 @@
                 {
                     totalPrice += ticket.Quantity * ticket.SelectedTicket.Price;
                 }
-                @totalPrice MKD
+                $@totalPrice
             </td>
             <td class="text-center"><a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
             <td class="text-center"><a class="btn btn-outline-primary" asp-action="GenerateInvoice" asp-route-id="@item.Id">Generate Invoice</a></td>

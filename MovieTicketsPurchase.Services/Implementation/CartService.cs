@@ -99,10 +99,10 @@ namespace MovieTicketsPurchase.Services.Implementation
                     var item = result[i-1];
                     totalQuantity += item.Quantity;
                     totalPrice += item.Quantity * item.SelectedTicket.Price;
-                    stringBuilder.AppendLine(i.ToString() + ". Movie: " + item.SelectedTicket.MovieName + ", Quantity: " + item.Quantity + ", Price: " + item.SelectedTicket.Price + " MKD");
+                    stringBuilder.AppendLine(i.ToString() + ". Movie: " + item.SelectedTicket.MovieName + ", Quantity: " + item.Quantity + ", Price: $" + item.SelectedTicket.Price);
                 }
                 stringBuilder.AppendLine("Total Quantity: " + totalQuantity.ToString());
-                stringBuilder.AppendLine("Total Price: " + totalPrice.ToString() + " MKD");
+                stringBuilder.AppendLine("Total Price: $" + totalPrice.ToString());
                 emailMessage.Content = stringBuilder.ToString();
                 ticketsInOrder.AddRange(result);
                 foreach (var item in ticketsInOrder)

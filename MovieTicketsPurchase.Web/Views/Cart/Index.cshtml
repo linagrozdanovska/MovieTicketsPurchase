@@ -1,11 +1,28 @@
-﻿@model MovieTicketsPurchase.Domain.DTO.CartDto
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<MovieTicketsPurchase.Domain.StripeSettings> Stripe
+
+@model MovieTicketsPurchase.Domain.DTO.CartDto
 
 <h1>Cart</h1>
 <div class="row mb-3">
     <div class="col-12">
-        <a  asp-action="OrderNow"class="btn btn-success">Order Now</a>
+        @if (Model.TotalPrice != 0) {
+            <form asp-controller="Cart" asp-action="PayOrder" method="post">
+                <article>
+                    <script src="https://checkout.stripe.com/checkout.js"
+                        class="stripe-button"
+                        data-key="@Stripe.Value.PublishableKey"
+                        data-locale="auto"
+                        data-description="MovieTicketsPurchase Payment"
+                        data-amount="@(Model.TotalPrice * 100)"
+                        data-label="Pay $@Model.TotalPrice">
+                    </script>
+                </article>
+            </form>
+        }
     </div>
 </div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -24,9 +41,9 @@
             <tr>
                 <th scope="row" class="text-right">@(i + 1)</th>
                 <td>@item.Ticket.MovieName</td>
-                <td class="text-right">@item.Ticket.Price MKD</td>
+                <td class="text-right">$@item.Ticket.Price</td>
                 <td class="text-right">@item.Quantity</td>
-                <td class="text-right">@(item.Ticket.Price * item.Quantity) MKD</td>
+                <td class="text-right">$@(item.Ticket.Price * item.Quantity)</td>
                 <td class="text-center"><a asp-route-id="@item.TicketId" asp-action="DeleteTicketFromCart" class="btn btn-danger">Delete</a></td>
             </tr>
         }
@@ -34,7 +51,7 @@
     <tfoot class="border-bottom">
         <tr>
             <td colspan="4"><strong>Total Price</strong></td>
-            <td class="text-right"><strong>@Model.TotalPrice MKD</strong></td>
+            <td class="text-right"><strong>$@Model.TotalPrice</strong></td>
             <td></td>
         </tr>
     </tfoot>

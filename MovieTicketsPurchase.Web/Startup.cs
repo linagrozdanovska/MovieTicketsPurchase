@@ -15,6 +15,7 @@ using MovieTicketsPurchase.Repository.Interface;
 using MovieTicketsPurchase.Services;
 using MovieTicketsPurchase.Services.Implementation;
 using MovieTicketsPurchase.Services.Interface;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +51,10 @@ namespace MovieTicketsPurchase.Web
             services.AddScoped<IEmailService, EmailService>(email => new EmailService(emailSettings));
             services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
             services.AddHostedService<ConsumeScopedHostedService>();
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ICartService, CartService>();
-            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderService, Services.Implementation.OrderService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -60,6 +62,7 @@ namespace MovieTicketsPurchase.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

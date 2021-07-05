@@ -6,6 +6,7 @@ using MovieTicketsPurchase.Domain.DTO;
 using MovieTicketsPurchase.Domain.Identity;
 using MovieTicketsPurchase.Repository;
 using MovieTicketsPurchase.Services.Interface;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,18 +44,42 @@ namespace MovieTicketsPurchase.Web.Controllers
             }
         }
 
-        public IActionResult OrderNow()
+        private Boolean OrderNow()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = this._cartService.orderNow(userId);
-            if (result)
+            return result;
+        }
+
+        public IActionResult PayOrder(string stripeEmail, string stripeToken)
+        {
+            var customerService = new CustomerService();
+            var chargeService = new ChargeService();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var order = this._cartService.getCartInfo(userId);
+            var customer = customerService.Create(new CustomerCreateOptions {
+                Email = stripeEmail,
+                Source = stripeToken
+            });
+            var charge = chargeService.Create(new ChargeCreateOptions { 
+                Amount = order.TotalPrice * 100,
+                Description = "MovieTicketsPurchase Payment",
+                Currency = "usd",
+                Customer = customer.Id
+            });
+            if (charge.Status == "succeeded")
             {
-                return RedirectToAction("Index", "Cart");
+                var result = this.OrderNow();
+                if (result)
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
             }
-            else
-            {
-                return RedirectToAction("Index", "Cart");
-            }
+            return RedirectToAction("Index", "Cart");
         }
     }
 }
