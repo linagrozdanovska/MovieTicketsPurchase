@@ -23,6 +23,11 @@ namespace MovieTicketsPurchase.Services.Implementation
         public async Task DoWork()
         {
             await _emailService.SendEmailAsync(_mailRepository.GetAll().Where(z => !z.Status).ToList());
+            foreach (var item in _mailRepository.GetAll().Where(z => !z.Status).ToList())
+            {
+                item.Status = true;
+                this._mailRepository.Update(item);
+            }
         }
     }
 }
