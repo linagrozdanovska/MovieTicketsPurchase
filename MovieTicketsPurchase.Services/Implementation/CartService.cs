@@ -15,13 +15,15 @@ namespace MovieTicketsPurchase.Services.Implementation
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<TicketInOrder> _ticketInOrderRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IRepository<EmailMessage> _mailRepository;
 
-        public CartService(IRepository<Cart> cartRepository, IRepository<TicketInOrder> ticketInOrderRepository, IRepository<Order> orderRepository, IUserRepository userRepository)
+        public CartService(IRepository<Cart> cartRepository, IRepository<TicketInOrder> ticketInOrderRepository, IRepository<Order> orderRepository, IUserRepository userRepository, IRepository<EmailMessage> mailRepository)
         {
             _cartRepository = cartRepository;
             _userRepository = userRepository;
             _orderRepository = orderRepository;
             _ticketInOrderRepository = ticketInOrderRepository;
+            _mailRepository = mailRepository;
         }
 
         public bool deleteTicketFromCart(string userId, Guid id)
@@ -67,6 +69,10 @@ namespace MovieTicketsPurchase.Services.Implementation
             {
                 var loggedInUser = this._userRepository.Get(userId);
                 var userCart = loggedInUser.UserCart;
+                EmailMessage emailMessage = new EmailMessage();
+                emailMessage.MailTo = loggedInUser.Email;
+                emailMessage.Subject = "Successfully created order";
+                emailMessage.Status = false;
                 Order order = new Order
                 {
                     Id = Guid.NewGuid(),
@@ -84,12 +90,27 @@ namespace MovieTicketsPurchase.Services.Implementation
                     UserOrder = order,
                     Quantity = z.Quantity
                 }).ToList();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("Your order is completed. The order contains the following tickets: ");
+                int totalQuantity = 0;
+                int totalPrice = 0;
+                for (int i = 1; i <= result.Count; i++)
+                {
+                    var item = result[i-1];
+                    totalQuantity += item.Quantity;
+                    totalPrice += item.Quantity * item.SelectedTicket.Price;
+                    stringBuilder.AppendLine(i.ToString() + ". Movie: " + item.SelectedTicket.MovieName + ", Quantity: " + item.Quantity + ", Price: " + item.SelectedTicket.Price + " MKD");
+                }
+                stringBuilder.AppendLine("Total Quantity: " + totalQuantity.ToString());
+                stringBuilder.AppendLine("Total Price: " + totalPrice.ToString() + " MKD");
+                emailMessage.Content = stringBuilder.ToString();
                 ticketsInOrder.AddRange(result);
                 foreach (var item in ticketsInOrder)
                 {
                     this._ticketInOrderRepository.Insert(item);
                 }
                 loggedInUser.UserCart.TicketsInCart.Clear();
+                this._mailRepository.Insert(emailMessage);
                 this._userRepository.Update(loggedInUser);
                 return true;
             }

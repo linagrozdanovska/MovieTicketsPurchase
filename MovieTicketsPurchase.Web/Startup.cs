@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieTicketsPurchase.Domain;
 using MovieTicketsPurchase.Domain.Identity;
 using MovieTicketsPurchase.Repository;
 using MovieTicketsPurchase.Repository.Implementation;
 using MovieTicketsPurchase.Repository.Interface;
+using MovieTicketsPurchase.Services;
 using MovieTicketsPurchase.Services.Implementation;
 using MovieTicketsPurchase.Services.Interface;
 using System;
@@ -22,9 +24,13 @@ namespace MovieTicketsPurchase.Web
 {
     public class Startup
     {
+        private EmailSettings emailSettings;
+
         public Startup(IConfiguration configuration)
         {
+            emailSettings = new EmailSettings();
             Configuration = configuration;
+            Configuration.GetSection("EmailSettings").Bind(emailSettings);
         }
 
         public IConfiguration Configuration { get; }
@@ -40,6 +46,10 @@ namespace MovieTicketsPurchase.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+            services.AddScoped<EmailSettings>(es => emailSettings);
+            services.AddScoped<IEmailService, EmailService>(email => new EmailService(emailSettings));
+            services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
+            services.AddHostedService<ConsumeScopedHostedService>();
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<IOrderService, OrderService>();

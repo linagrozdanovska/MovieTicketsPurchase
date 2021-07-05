@@ -18,6 +18,10 @@ namespace MovieTicketsPurchase.Repository
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<TicketInCart> TicketsInCart { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<TicketInOrder> TicketsInOrder { get; set; }
+        public virtual DbSet<EmailMessage> EmailMessages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
