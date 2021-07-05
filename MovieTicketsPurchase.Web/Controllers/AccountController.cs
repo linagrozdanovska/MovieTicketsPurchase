@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MovieTicketsPurchase.Domain.DomainModels;
 using MovieTicketsPurchase.Domain.Identity;
+using MovieTicketsPurchase.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace MovieTicketsPurchase.Web.Controllers
         [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Register(UserRegistrationDto request)
         {
+            
             if (ModelState.IsValid)
             {
                 var userCheck = await userManager.FindByEmailAsync(request.Email);
@@ -49,6 +51,7 @@ namespace MovieTicketsPurchase.Web.Controllers
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
+                        await userManager.AddToRoleAsync(user, "StandardUser");
                         return RedirectToAction("Login");
                     }
                     else
