@@ -11,9 +11,11 @@ using MovieTicketsPurchase.Domain.DTO;
 using MovieTicketsPurchase.Services.Interface;
 using ClosedXML.Excel;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
+    [Authorize(Roles = "StandardUser,Admin")]
     public class TicketsController : Controller
     {
         private readonly ITicketService _ticketService;

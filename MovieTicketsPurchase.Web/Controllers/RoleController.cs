@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MovieTicketsPurchase.Domain.Identity;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
+    [Authorize(Roles = "StandardUser,Admin")]
     public class RoleController : Controller
     {
         private RoleManager<IdentityRole> roleManager;

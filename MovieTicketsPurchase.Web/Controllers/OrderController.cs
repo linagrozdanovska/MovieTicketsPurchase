@@ -1,4 +1,5 @@
 ﻿using GemBox.Document;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieTicketsPurchase.Services.Interface;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
+    [Authorize(Roles = "StandardUser,Admin")]
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;

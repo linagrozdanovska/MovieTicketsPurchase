@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
+    [Authorize(Roles = "StandardUser,Admin")]
     public class AccountController : Controller
     {
 

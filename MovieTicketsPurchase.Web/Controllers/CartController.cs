@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieTicketsPurchase.Domain.DomainModels;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
+    [Authorize(Roles = "StandardUser,Admin")]
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
