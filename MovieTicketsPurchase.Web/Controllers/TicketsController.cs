@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using MovieTicketsPurchase.Domain.DomainModels;
 using MovieTicketsPurchase.Domain.DTO;
 using MovieTicketsPurchase.Services.Interface;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace MovieTicketsPurchase.Web.Controllers
 {
@@ -32,6 +34,49 @@ namespace MovieTicketsPurchase.Web.Controllers
                 allTickets = allTickets.Where(z => z.ShowTime.Date == date.Date).ToList();
             }
             return View(allTickets);
+        }
+
+        public IActionResult ExportTickets(string genre)
+        {
+            var allTickets = this._ticketService.GetAllTickets();
+            string result = "Genre not specified. Displaying all tickets.";
+            if (!String.IsNullOrEmpty(genre))
+            {
+                result = "Displaying tickets for movies of genre: " + genre;
+                allTickets = allTickets.Where(z => z.MovieGenre.ToLower().Equals(genre.ToLower())).ToList();
+                if (allTickets.Count == 0)
+                {
+                    result = "There are no tickets for movies of genre: " + genre + ". Displaying all tickets.";
+                    allTickets = this._ticketService.GetAllTickets();
+                }
+            }
+            string fileName = "Tickets.xlsx";
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            using (var workbook = new XLWorkbook())
+            {
+                IXLWorksheet worksheet = workbook.Worksheets.Add("Tickets");
+                worksheet.Cell(1, 1).Value = result;
+                worksheet.Cell(3, 1).Value = "Movie";
+                worksheet.Cell(3, 2).Value = "Description";
+                worksheet.Cell(3, 3).Value = "Genre";
+                worksheet.Cell(3, 4).Value = "Showtime";
+                worksheet.Cell(3, 5).Value = "Ticket Price (MKD)";
+                for (int i = 0; i < allTickets.Count; i++)
+                {
+                    var item = allTickets[i];
+                    worksheet.Cell(i + 4, 1).Value = item.MovieName;
+                    worksheet.Cell(i + 4, 2).Value = item.MovieDescription;
+                    worksheet.Cell(i + 4, 3).Value = item.MovieGenre;
+                    worksheet.Cell(i + 4, 4).Value = item.ShowTime;
+                    worksheet.Cell(i + 4, 5).Value = item.Price;
+                }
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, contentType, fileName);
+                }
+            }
         }
 
         // GET: Tickets/Details/5
